@@ -111,7 +111,7 @@ const ask = (subject) => `mailto:${CONTACT}?subject=${encodeURIComponent(subject
 export function loginPage({ error } = {}) {
   return page('Sign in', {
     heading: 'Welcome back',
-    sub: 'Sign in to your Sterling portal.',
+    sub: 'Sign in to your partner portal.',
     body: `${errLine(error ? 'Incorrect password. Try again.' : '')}
 <form method="POST" action="/api/auth?do=login">
 ${pwField('password', 'Password', 'current-password', { extra: 'autofocus', aside: `<a href="${ask('Sterling: new setup link')}">Forgot?</a>` })}

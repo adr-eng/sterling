@@ -1,7 +1,7 @@
 # Sterling
 
 A password-protected partner portal plus a lead finder for selling AI voice
-agents to local businesses. Built on the Hirobius Portal Kit (pinned v20).
+agents to local businesses. Built on the Hirobius Portal Kit (pinned v21).
 Static site on Vercel plus one sign-in function. No build step.
 
 **Keys never touch our side.** The partner saves their own Outscraper key in the
