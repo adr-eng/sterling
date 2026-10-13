@@ -213,3 +213,12 @@ test('sign-in pages: show/hide and copy buttons start hidden, so the forms work 
   assert.match(login, /src="\/brand\/auth-ui\.js"/);
   assert.match(adminPage({ newLink: 'https://x.example/setup?code=a' }), /data-copy="new-link"[^>]*hidden/);
 });
+
+test('sign-in pages follow HDS: kit sans only, sentence case, no shadows', async () => {
+  const pages = await import('../auth/pages.mjs');
+  const html = [pages.loginPage(), pages.setupPage({ code: 'x' }), pages.changePage(), pages.adminPage({ newLink: 'https://x.example/s' }), pages.notReadyPage()].join('\n');
+  assert.doesNotMatch(html, /serif[;,'"}]|Georgia|New York/i, 'no serif faces');
+  assert.doesNotMatch(html.replace(/sans-serif/g, ''), /serif/i, 'no serif stack');
+  assert.doesNotMatch(html, /text-transform:\s*uppercase/i, 'no all caps');
+  assert.doesNotMatch(html, /box-shadow/i, 'no shadows');
+});

@@ -38,7 +38,7 @@ days. Fail-closed: without `SESSION_SECRET` the site shows "not set up yet".
 - **/admin** (you only): see whether the partner has set a password, and make a new partner setup link in one click (that's the reset: no Vercel steps). Each link works once; a new one replaces the last.
 - **/password**: either of you changes your own password.
 
-Look: one card with a serif heading (the device's built-in serif; nothing downloaded), show/hide password, "Keep me signed in" (unchecked = 12 hours, ends when the browser closes). **Logo:** add `brand/logo.svg` and set `BRAND_LOGO` in `auth/pages.mjs`; until then the header shows the "Sterling" wordmark.
+Look: one card in the kit's sans (Satoshi), sentence case, no shadow; show/hide password, "Keep me signed in" (unchecked = 12 hours, ends when the browser closes). **Logo:** add `brand/logo.svg` and set `BRAND_LOGO` in `auth/pages.mjs`; until then the header shows the "Sterling" wordmark.
 
 Code: `middleware.js` → `auth/gate.mjs` (checks the cookie on every request), `api/auth.js` → `auth/handler.mjs` (sign in, set, change, sign out, admin), `auth/store.mjs` (Blob), `auth/pages.mjs` (the forms). `/admin` is a rewrite to `/api/auth?do=admin` in `vercel.json`.
 
