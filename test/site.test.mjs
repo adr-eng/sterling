@@ -79,3 +79,11 @@ test('nothing from our internal setup leaks into what the partner gets', () => {
   const banned = /supabase|service_role|hirobius\/ops|\/ops\/|exterior-cleaning|scaffold-clients|\.env\.local|vvyccwxtcwvlusweenje|sk-ant-|ghp_/i;
   for (const f of files) assert.doesNotMatch(read(f), banned, `${f} mentions internal setup or a secret`);
 });
+
+test('the site referrer policy keeps same-origin form posts working', () => {
+  // "no-referrer" makes browsers send Origin: null on our own sign-in forms.
+  const cfg = JSON.parse(read('vercel.json'));
+  const policies = cfg.headers.flatMap((h) => h.headers).filter((h) => h.key.toLowerCase() === 'referrer-policy').map((h) => h.value);
+  assert.ok(policies.length > 0, 'a Referrer-Policy is set');
+  for (const v of policies) assert.notEqual(v, 'no-referrer');
+});
