@@ -221,4 +221,6 @@ test('sign-in pages follow HDS: kit sans only, sentence case, no shadows', async
   assert.doesNotMatch(html.replace(/sans-serif/g, ''), /serif/i, 'no serif stack');
   assert.doesNotMatch(html, /text-transform:\s*uppercase/i, 'no all caps');
   assert.doesNotMatch(html, /box-shadow/i, 'no shadows');
+  assert.doesNotMatch(html, /font-weight:\s*(?!400|500|700)\d{3}/, 'HDS weights only: 400, 500, 700');
+  assert.doesNotMatch(html, /Satoshi/, 'HDS type is Plus Jakarta Sans');
 });

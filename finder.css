@@ -7,7 +7,7 @@ body {
   margin: 0;
   background: var(--bg, #f3f3f4);
   color: var(--ink, #141414);
-  font-family: var(--sans, 'Satoshi', system-ui, sans-serif);
+  font-family: var(--sans, 'Plus Jakarta Sans', system-ui, sans-serif);
   font-size: var(--fs-body, .92rem);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -32,7 +32,7 @@ h1 { margin: 12px 0 6px; font-size: var(--fs-hero, 2.1rem); letter-spacing: -.02
 }
 
 label { display: grid; gap: 4px; margin: 0 0 12px; }
-.lbl { font-weight: 600; font-size: var(--fs-label, .8rem); }
+.lbl { font-weight: 500; font-size: var(--fs-label, .8rem); }
 .hint { color: var(--muted, #555); font-size: var(--fs-micro, .75rem); }
 input[type=text], input[type=password], input[type=number], textarea {
   width: 100%; font: inherit; font-size: 1rem; padding: .6rem .75rem; border-radius: var(--r-sm, 8px);
@@ -53,7 +53,7 @@ textarea { resize: vertical; min-height: 9rem; }
 
 .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
 button, .filebtn {
-  font: inherit; font-size: .92rem; font-weight: 600; min-height: 44px; padding: .55rem 1rem; border-radius: var(--r-sm, 8px);
+  font: inherit; font-size: .92rem; font-weight: 500; min-height: 44px; padding: .55rem 1rem; border-radius: var(--r-sm, 8px);
   border: 1px solid var(--accent, #141414); background: var(--accent, #141414); color: var(--panel, #fff); cursor: pointer;
 }
 button.ghost, .filebtn { background: transparent; color: var(--ink, #141414); border-color: var(--line-strong, #cfcfcf); }
@@ -62,7 +62,7 @@ button.ghost, .filebtn { background: transparent; color: var(--ink, #141414); bo
 button:disabled { opacity: .45; cursor: not-allowed; }
 .row button { min-height: 0; height: calc(2.4rem + 4px); }
 
-.status { margin: 0 0 12px; font-weight: 600; }
+.status { margin: 0 0 12px; font-weight: 500; }
 .status[data-ok=yes] { color: var(--ok, #218358); }
 .note { margin: 8px 0 0; color: var(--muted, #555); font-size: var(--fs-label, .8rem); max-width: 70ch; }
 .plan { margin: 0; max-width: 70ch; }
@@ -77,7 +77,7 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .progress p { margin: 6px 0 0; color: var(--muted, #555); font-size: var(--fs-label, .8rem); }
 
 .weights { margin: 4px 0 8px; }
-.weights summary { cursor: pointer; font-weight: 600; padding: 12px 0; }
+.weights summary { cursor: pointer; font-weight: 500; padding: 12px 0; }
 .weights .grid3 { margin-top: 8px; }
 
 .results-head h2 { margin-bottom: 4px; }
