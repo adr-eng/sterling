@@ -1,0 +1,12 @@
+{
+  "name": "sterling-portal",
+  "private": true,
+  "type": "module",
+  "description": "Sterling partner portal + voice-agent lead finder. Static site on Vercel; no build step, no dependencies.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/kit/sync-links.mjs index.html --check && node scripts/kit/check-portal.mjs index.html --strict && node --test",
+    "pack": "node scripts/pack-tool.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

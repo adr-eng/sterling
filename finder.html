@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Sterling Lead Finder</title>
+<!-- Fonts and colors come from the shared portal kit; layout is in finder.css.
+     No inline scripts or styles: the Content-Security-Policy in vercel.json
+     allows only this site's own scripts, and network calls only to Outscraper. -->
+<link rel="stylesheet" href="https://portal-kit-adrian-6234s-projects.vercel.app/releases/v20/theme.css" />
+<link rel="stylesheet" href="/finder.css" />
+<script type="module" src="/finder.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="/">← Back to the portal</a>
+    <h1>Lead finder</h1>
+    <p class="lede">Find local businesses that lose calls, ranked by how much a voice agent would help them. Searches run on <strong>your</strong> Outscraper account.</p>
+  </header>
+
+  <main>
+    <section class="step" id="key" aria-labelledby="key-h">
+      <h2 id="key-h"><span class="num">1</span> Your Outscraper key</h2>
+      <p class="status" id="keyStatus" role="status">No key saved yet.</p>
+      <form id="keyForm" class="row" autocomplete="off">
+        <label class="grow">
+          <span class="lbl">API key</span>
+          <input type="password" id="apiKey" spellcheck="false" autocapitalize="off" placeholder="Paste your key" />
+        </label>
+        <button type="button" class="ghost" id="toggleKey" aria-pressed="false">Show</button>
+      </form>
+      <label class="check"><input type="checkbox" id="remember" checked /> Remember on this device</label>
+      <div class="actions">
+        <button type="button" id="saveKey">Save key</button>
+        <button type="button" class="ghost" id="forgetKey">Forget key</button>
+      </div>
+      <p class="note">Your key is kept in this browser and sent only to Outscraper. Nothing on this site sends it anywhere else, and Hirobius never receives or stores it. No key yet? <a href="https://app.outscraper.com/account/api" target="_blank" rel="noopener">Create one here</a> (the first 500 places each month are free).</p>
+    </section>
+
+    <section class="step" id="profile" aria-labelledby="profile-h">
+      <h2 id="profile-h"><span class="num">2</span> Your profile</h2>
+      <p class="note">Saved on this device. Export it to back it up or to send it with your answers.</p>
+      <div class="grid2">
+        <label><span class="lbl">Your name</span><input type="text" id="pName" autocomplete="name" /></label>
+        <label><span class="lbl">Company</span><input type="text" id="pCompany" autocomplete="organization" /></label>
+      </div>
+      <div class="grid2">
+        <label><span class="lbl">Business types to search</span><span class="hint">One per line, the way you'd type it into Google Maps.</span><textarea id="pNiches" rows="8" spellcheck="false"></textarea></label>
+        <label><span class="lbl">Cities or areas</span><span class="hint">One per line, for example: Austin, TX</span><textarea id="pLocations" rows="8" spellcheck="false" placeholder="Austin, TX&#10;Round Rock, TX"></textarea></label>
+      </div>
+      <div class="grid3">
+        <label><span class="lbl">Results per search</span><input type="number" id="pLimit" min="1" max="100" inputmode="numeric" /></label>
+        <label><span class="lbl">Max places per run</span><input type="number" id="pMax" min="1" max="5000" inputmode="numeric" /></label>
+        <label><span class="lbl">Minimum score</span><input type="number" id="pMin" min="0" max="100" inputmode="numeric" /></label>
+      </div>
+      <label class="check"><input type="checkbox" id="pChains" /> Hide likely chains (the same name 3 or more times)</label>
+      <label class="check"><input type="checkbox" id="pNoPhone" /> Hide listings with no phone number</label>
+      <details class="weights">
+        <summary>Scoring weights</summary>
+        <p class="note">How much each signal counts. Any numbers work; they are scaled to 100.</p>
+        <div class="grid3" id="weights"></div>
+      </details>
+      <ul class="problems" id="problems" aria-live="polite"></ul>
+      <div class="actions">
+        <button type="button" id="saveProfile">Save profile</button>
+        <button type="button" class="ghost" id="exportProfile">Export</button>
+        <label class="ghost filebtn">Import<input type="file" id="importProfile" accept="application/json,.json" /></label>
+        <button type="button" class="ghost" id="resetProfile">Reset to defaults</button>
+      </div>
+    </section>
+
+    <section class="step" id="run" aria-labelledby="run-h">
+      <h2 id="run-h"><span class="num">3</span> Find leads</h2>
+      <p class="plan" id="plan"></p>
+      <div class="actions">
+        <button type="button" id="runBtn">Find leads</button>
+        <button type="button" class="ghost" id="stopBtn" hidden>Stop</button>
+        <button type="button" class="ghost" id="sampleBtn">Try sample data</button>
+      </div>
+      <div class="progress" id="progressWrap" hidden>
+        <progress id="progress" max="1" value="0"></progress>
+        <p id="progressText" role="status"></p>
+      </div>
+      <p class="error" id="error" role="alert" hidden></p>
+    </section>
+
+    <section class="step" id="results" aria-labelledby="results-h" hidden>
+      <div class="results-head">
+        <h2 id="results-h">Leads</h2>
+        <p class="note" id="resultsSummary"></p>
+      </div>
+      <div class="actions">
+        <button type="button" id="csvBtn">Download CSV</button>
+        <button type="button" class="ghost" id="clearBtn">Clear results</button>
+      </div>
+      <ol class="leads" id="leads"></ol>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Scraped listings are unverified. Check a business before you contact it, and follow calling and texting rules where you sell. See “Using leads responsibly” in the portal.</p>
+  </footer>
+</div>
+</body>
+</html>

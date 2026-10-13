@@ -1,0 +1,13 @@
+{
+  "$comment": "The one list of Sterling's links. Entries with audience \"client\" render in the portal's Links section via `node scripts/kit/sync-links.mjs` (never edit that section by hand). Links must be https://. Files you hand over (zips, PDFs) go in files/ and are linked from an Updates entry instead, because they live on this site.",
+  "links": [
+    { "id": "outscraper-app", "title": "Outscraper account", "url": "https://app.outscraper.com", "audience": "client", "section": "Accounts and keys", "summary": "Sign up or sign in. Searches bill here." },
+    { "id": "outscraper-key", "title": "Your Outscraper API key", "url": "https://app.outscraper.com/account/api", "audience": "client", "section": "Accounts and keys", "summary": "Create or copy the key for the lead finder." },
+    { "id": "outscraper-pricing", "title": "Outscraper pricing", "url": "https://outscraper.com/pricing/", "audience": "client", "section": "Accounts and keys", "summary": "500 places a month free, then pay as you go." },
+    { "id": "claude", "title": "Claude", "url": "https://claude.ai", "audience": "client", "section": "AI assistant", "summary": "For Copy for AI. Any plan works." },
+    { "id": "claude-code", "title": "Claude Code", "url": "https://code.claude.com/docs/en/overview", "audience": "client", "section": "AI assistant", "summary": "Only if you want to change the tool's code yourself." },
+    { "id": "nodejs", "title": "Node.js download", "url": "https://nodejs.org/en/download", "audience": "client", "section": "Command-line tool", "summary": "Version 20 or newer, only for the command-line tool." },
+    { "id": "dnc", "title": "National Do Not Call Registry", "url": "https://telemarketing.donotcall.gov", "audience": "client", "section": "Calling rules", "summary": "Rules for sales calls in the US." },
+    { "id": "fcc-ai-voice", "title": "FCC: AI voices count as robocalls", "url": "https://www.fcc.gov/document/fcc-makes-ai-generated-voices-robocalls-illegal", "audience": "client", "section": "Calling rules", "summary": "Why your voice agent shouldn't cold-call prospects." }
+  ]
+}

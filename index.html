@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Sterling Portal</title>
+<!-- Styling and rendering come from the shared Hirobius Portal Kit (pinned v20).
+     This page owns only content: #portal-data (structure), #portal-payload (the
+     Copy-for-AI handoff) and the markdown documents. Keep both JSON blocks valid
+     and in sync, then run `npm run check`. -->
+<link rel="stylesheet" href="https://portal-kit-adrian-6234s-projects.vercel.app/releases/v20/theme.css" />
+<style>
+  /* Tiny inline fallback so the page is readable if the shared kit can't load. */
+  #fallback { max-width:640px; margin:0 auto; padding:2rem 1.25rem;
+    font-family:system-ui, sans-serif; line-height:1.55; color:#141414; }
+</style>
+</head>
+<body>
+  <script type="application/json" id="portal-data">
+{
+  "client": "Sterling",
+  "subtitle": "Voice-agent lead finder",
+  "titleSuffix": " Portal",
+  "lastUpdated": "2026-10-13",
+  "copyForAI": {
+    "mode": "payload",
+    "payloadId": "portal-payload",
+    "placement": [
+      "top",
+      "footer"
+    ]
+  },
+  "contact": {
+    "email": "adrian@hirobius.com"
+  },
+  "sections": [
+    {
+      "type": "status",
+      "id": "status",
+      "title": "Getting started",
+      "phases": [
+        {
+          "id": "setup",
+          "title": "Get set up (about 15 minutes)",
+          "note": "Your accounts and keys stay yours. We never need them.",
+          "items": [
+            {
+              "id": "s1",
+              "label": "Create your Outscraper account",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "What it is",
+                  "v": "Outscraper pulls business listings from Google Maps. Searches bill to this account, so the costs are yours and so is the data."
+                },
+                {
+                  "k": "Cost",
+                  "v": "The first 500 places each month are free. After that, about $3 per 1,000 places, pay as you go. Extra add-ons like email finding cost more; the lead finder never uses them."
+                },
+                {
+                  "k": "Send back",
+                  "v": "Nothing."
+                }
+              ],
+              "steps": [
+                "Go to [app.outscraper.com](https://app.outscraper.com) and sign up (Google sign-in works).",
+                "Confirm your email.",
+                "Add a payment method under **Billing** only when you need more than the free 500 a month. Check current prices on [outscraper.com/pricing](https://outscraper.com/pricing/)."
+              ]
+            },
+            {
+              "id": "s2",
+              "label": "Create your API key and save it in the lead finder",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "What it is",
+                  "v": "The key lets the lead finder run searches on your Outscraper account. It is like a password: keep it to yourself."
+                },
+                {
+                  "k": "Cost",
+                  "v": "Free."
+                },
+                {
+                  "k": "Send back",
+                  "v": "Nothing. **Never send your key to anyone, including us.**"
+                }
+              ],
+              "steps": [
+                "Open your [Outscraper API key page](https://app.outscraper.com/account/api) and create or copy your key.",
+                "Open the lead finder (the link is under **Updates** on this page).",
+                "Paste the key in step 1 and select **Save key**. Leave **Remember on this device** on if this is your own computer.",
+                "On a shared computer, turn **Remember** off, or select **Forget key** when you're done."
+              ]
+            },
+            {
+              "id": "s3",
+              "label": "Run a test search",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "What it is",
+                  "v": "Proves the key works and shows you what a lead list looks like. A 5-result search uses 5 of your free places."
+                },
+                {
+                  "k": "Cost",
+                  "v": "Free (within the 500 a month)."
+                },
+                {
+                  "k": "Send back",
+                  "v": "Nothing, unless something breaks. Then send a screenshot of the error message."
+                }
+              ],
+              "steps": [
+                "In the lead finder, select **Try sample data** first. It shows made-up businesses and costs nothing.",
+                "In **Your profile**, keep one business type (for example `plumber`), add your city (for example `Austin, TX`), and set **Results per search** to 5.",
+                "Select **Find leads**. Open **Why this score** on a lead to see the reasons.",
+                "Select **Download CSV** to get the list as a spreadsheet."
+              ]
+            },
+            {
+              "id": "s4",
+              "label": "Pick your AI assistant (recommended)",
+              "status": "upcoming",
+              "desc": "Optional",
+              "fields": [
+                {
+                  "k": "What it is",
+                  "v": "You'll use it to answer our questions (Copy for AI) and, later, to work with your copy of the tool."
+                },
+                {
+                  "k": "Cost",
+                  "v": "Free plans work for the questions. Changing the code yourself needs a paid plan or an API key."
+                },
+                {
+                  "k": "Send back",
+                  "v": "Which assistant you use."
+                }
+              ],
+              "steps": [
+                "For the questions: [Claude](https://claude.ai) or ChatGPT, any plan.",
+                "To change the tool's code yourself later: [Claude Code](https://code.claude.com/docs/en/overview), which needs a Claude Pro or Max plan or an API key from [console.anthropic.com](https://console.anthropic.com).",
+                "Never paste API keys into an AI chat."
+              ]
+            },
+            {
+              "id": "s5",
+              "label": "Run the tool on your own computer (optional)",
+              "status": "upcoming",
+              "desc": "Optional",
+              "fields": [
+                {
+                  "k": "What it is",
+                  "v": "The same lead finder as a command-line tool, for scheduled runs or for your AI agent to customize. Skip this if the web finder is enough."
+                },
+                {
+                  "k": "Cost",
+                  "v": "Free."
+                },
+                {
+                  "k": "Send back",
+                  "v": "Nothing."
+                }
+              ],
+              "steps": [
+                "Install Node.js 20 or newer (the LTS version) from [nodejs.org](https://nodejs.org/en/download).",
+                "Download the tool (the zip under **Updates**) and unzip it.",
+                "In a terminal, in that folder: `npm test`, then `node cli/sterling.mjs --fixture fixtures/sample-response.json`.",
+                "For a live run, set your key in that terminal only: `export OUTSCRAPER_API_KEY=your-key` (Windows PowerShell: `$env:OUTSCRAPER_API_KEY=\"your-key\"`), then `node cli/sterling.mjs --profile your-profile.json --out runs`.",
+                "The tool's README explains every option. Your AI agent should read `AGENTS.md` first."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "questions",
+          "title": "Questions for you",
+          "note": "Fastest way: **Copy for AI** (below), paste it into your assistant, and say \"go\". It asks one question at a time and writes the email back to us.",
+          "items": [
+            {
+              "id": "q1",
+              "label": "Which business types do you want to sell to?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Sets the default searches and which types score highest."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "Plumbers",
+                      "HVAC",
+                      "Electricians",
+                      "Locksmiths",
+                      "Garage door repair",
+                      "Roofers",
+                      "Pest control",
+                      "Dentists",
+                      "Chiropractors",
+                      "Med spas",
+                      "Vets",
+                      "Auto repair",
+                      "Law firms",
+                      "Property managers",
+                      "Other (name them)"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "Your top 3 to 5, best first."
+                }
+              ]
+            },
+            {
+              "id": "q2",
+              "label": "Where do you sell?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Sets the cities and areas each search runs in."
+                },
+                {
+                  "k": "Send back",
+                  "v": "Cities, metro areas or states, plus whether you work remotely nationwide."
+                }
+              ]
+            },
+            {
+              "id": "q3",
+              "label": "What does your voice agent do best?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Changes what we score up. A booking-focused agent favors businesses with no online booking; an after-hours agent favors businesses closed evenings and weekends."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "Answers missed and after-hours calls",
+                      "Books appointments into a calendar",
+                      "Qualifies callers and texts the owner",
+                      "Answers common questions",
+                      "Makes follow-up calls",
+                      "Other"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "Which ones, and which one you lead with in a sales call."
+                }
+              ]
+            },
+            {
+              "id": "q4",
+              "label": "Describe your best customer so far",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Real wins tell us what a good lead looks like better than any rule."
+                },
+                {
+                  "k": "Send back",
+                  "v": "1 to 3 businesses that bought (or would): type, size, roughly how many calls they get, and why they said yes. Names are optional."
+                }
+              ]
+            },
+            {
+              "id": "q5",
+              "label": "What size of business fits?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Owner-run shops decide fast; chains decide slowly and centrally."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "Solo or owner-run",
+                      "Small team (2 to 10)",
+                      "Multi-location",
+                      "Franchises and chains"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "The size range you want, and yes or no to hiding chains."
+                }
+              ]
+            },
+            {
+              "id": "q6",
+              "label": "How many leads, and what monthly budget?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Sets the per-run cap so a search never costs more than you planned."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "Free only (500 places a month)",
+                      "Up to $10 a month",
+                      "Up to $25 a month",
+                      "$50 or more a month"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "New leads you want per week, and your monthly Outscraper cap."
+                }
+              ]
+            },
+            {
+              "id": "q7",
+              "label": "Where should leads go?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "We can export straight into the tool you already use instead of a CSV."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "CSV or Excel",
+                      "Google Sheets",
+                      "GoHighLevel",
+                      "HubSpot",
+                      "Close",
+                      "A dialer",
+                      "Other"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "The tool, and how you get leads into it today."
+                }
+              ]
+            },
+            {
+              "id": "q8",
+              "label": "Do you need owner names and emails?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Outscraper can look up emails and contacts for each business, but it is a separate paid add-on that can cost several times more than the listings."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "No, phone numbers are enough",
+                      "Yes, emails",
+                      "Yes, owner names and emails"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "Yes or no, and how you'd use them."
+                }
+              ]
+            },
+            {
+              "id": "q9",
+              "label": "How do you want to run it?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Decides what we build for you."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "The web lead finder is enough",
+                      "On my own computer, with my AI agent",
+                      "My own hosted copy on my own accounts",
+                      "On a schedule (for example, every Monday)"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "One choice, or a combination."
+                }
+              ]
+            },
+            {
+              "id": "q10",
+              "label": "Anything to leave out?",
+              "status": "upcoming",
+              "fields": [
+                {
+                  "k": "Why we ask",
+                  "v": "Keeps your list clean."
+                },
+                {
+                  "k": "Options",
+                  "list": {
+                    "items": [
+                      "Franchises",
+                      "Existing customers",
+                      "Businesses already using an AI receptionist",
+                      "Certain competitors or areas"
+                    ]
+                  }
+                },
+                {
+                  "k": "Send back",
+                  "v": "A list, or \"nothing\"."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "from-us",
+          "title": "From Hirobius",
+          "items": [
+            {
+              "label": "Lead finder built for voice-agent prospects",
+              "status": "done"
+            },
+            {
+              "label": "Your own copy of the tool, cleaned of our settings",
+              "status": "done"
+            },
+            {
+              "label": "Read your answers and write the spec for your custom version",
+              "status": "upcoming"
+            },
+            {
+              "label": "Build your custom version and hand it over here",
+              "status": "upcoming"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "assist",
+      "id": "start",
+      "title": "Start here",
+      "body": "Two jobs: **get set up** (the steps above) and **answer the questions**. To answer, select **Copy for AI**, paste it into Claude or ChatGPT, and say \"go\". It walks you through each question and writes the email back to us.",
+      "notes": [
+        "Never send your API keys to anyone, including us. The lead finder keeps your key on your own device."
+      ],
+      "cta": {
+        "label": "Copy for AI"
+      }
+    },
+    {
+      "type": "updates",
+      "id": "updates",
+      "title": "Updates",
+      "items": [
+        {
+          "date": "2026-10-13",
+          "note": "Your portal, lead finder and tool are ready. Start with “Get set up”, then answer the questions.",
+          "attachments": [
+            {
+              "label": "Open the lead finder",
+              "href": "/finder.html"
+            },
+            {
+              "label": "Download the tool (zip)",
+              "href": "/files/sterling-tool.zip"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "links",
+      "id": "links",
+      "title": "Links",
+      "items": [
+        {
+          "title": "Outscraper account",
+          "url": "https://app.outscraper.com",
+          "section": "Accounts and keys",
+          "summary": "Sign up or sign in. Searches bill here."
+        },
+        {
+          "title": "Your Outscraper API key",
+          "url": "https://app.outscraper.com/account/api",
+          "section": "Accounts and keys",
+          "summary": "Create or copy the key for the lead finder."
+        },
+        {
+          "title": "Outscraper pricing",
+          "url": "https://outscraper.com/pricing/",
+          "section": "Accounts and keys",
+          "summary": "500 places a month free, then pay as you go."
+        },
+        {
+          "title": "Claude",
+          "url": "https://claude.ai",
+          "section": "AI assistant",
+          "summary": "For Copy for AI. Any plan works."
+        },
+        {
+          "title": "Claude Code",
+          "url": "https://code.claude.com/docs/en/overview",
+          "section": "AI assistant",
+          "summary": "Only if you want to change the tool's code yourself."
+        },
+        {
+          "title": "Node.js download",
+          "url": "https://nodejs.org/en/download",
+          "section": "Command-line tool",
+          "summary": "Version 20 or newer, only for the command-line tool."
+        },
+        {
+          "title": "National Do Not Call Registry",
+          "url": "https://telemarketing.donotcall.gov",
+          "section": "Calling rules",
+          "summary": "Rules for sales calls in the US."
+        },
+        {
+          "title": "FCC: AI voices count as robocalls",
+          "url": "https://www.fcc.gov/document/fcc-makes-ai-generated-voices-robocalls-illegal",
+          "section": "Calling rules",
+          "summary": "Why your voice agent shouldn't cold-call prospects."
+        }
+      ]
+    },
+    {
+      "type": "docs",
+      "id": "docs",
+      "title": "Documents",
+      "items": [
+        {
+          "title": "How the lead finder works",
+          "desc": "What it searches, how it scores, and what each signal means.",
+          "bodyId": "doc-how"
+        },
+        {
+          "title": "Keys and accounts",
+          "desc": "Every account and key you need, where to get it, and what it costs.",
+          "bodyId": "doc-keys"
+        },
+        {
+          "title": "Your keys and data",
+          "desc": "Where your key is kept and who can see what.",
+          "bodyId": "doc-privacy"
+        },
+        {
+          "title": "Using leads responsibly",
+          "desc": "Unverified data, calling rules, and AI voices.",
+          "bodyId": "doc-responsible"
+        },
+        {
+          "title": "Getting your custom version",
+          "desc": "How your answers become a tool built for you.",
+          "bodyId": "doc-custom"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <!-- Copy for AI copies this block verbatim. Its instructionsForAssistant drives
+       the question-by-question interview and the reply to Hirobius. -->
+  <script type="application/json" id="portal-payload">
+{
+  "project": "Sterling: voice-agent lead finder",
+  "preparedBy": "Hirobius",
+  "contact": "adrian@hirobius.com",
+  "audience": "A sales partner who sells AI voice agents (AI receptionists) to local businesses.",
+  "goal": "Get the partner set up on their own accounts, collect their answers, and hand Hirobius a spec to customize the tool for them.",
+  "keysPolicy": "Every key belongs to the partner and stays with the partner. Hirobius never receives, stores or needs any key. Searches bill to the partner's own Outscraper account.",
+  "tool": {
+    "whatItDoes": "Searches Google Maps through the Outscraper API for local businesses, scores each 0-100 on how much an AI voice agent (answering, booking, after-hours) would help it, explains each score in plain English, and exports a CSV.",
+    "howItRuns": [
+      "Web lead finder at /finder.html on this portal: runs in the browser; the Outscraper key is stored only on the user's device and sent only to api.app.outscraper.com.",
+      "Command-line tool (download: /files/sterling-tool.zip): Node 20+, no installs; reads OUTSCRAPER_API_KEY from the shell."
+    ],
+    "dataSource": "Outscraper Google Maps search (GET https://api.app.outscraper.com/maps/search-v3, header X-API-KEY). Fields used: name, type, subtypes, phone, website, address, city, state_code, rating, reviews, working_hours, booking_appointment_link, reservation_links, verified, business_status, place_id, location_link.",
+    "scoring": {
+      "levers": {
+        "nicheFit": "How phone-driven the business type is: urgent trades (plumber, HVAC, locksmith, garage door, roofing, pest control...) 1.0; appointment businesses (dentist, chiropractor, med spa, vet, auto repair, law firm...) 0.7; anything else 0.1.",
+        "callVolume": "Review count as a stand-in for call volume, log-scaled; about 316 reviews earns the full amount.",
+        "coverageGap": "Hours that leave the phone uncovered: closed weekends, closed weekdays, closing by 6 PM. Open 24 hours = 0; hours not listed = 0.5.",
+        "phoneOnlyBooking": "No online booking link, so bookings come by phone.",
+        "ownerVerified": "Claimed Google listing, so a decision-maker is reachable."
+      },
+      "defaultWeights": {
+        "nicheFit": 35,
+        "callVolume": 25,
+        "coverageGap": 20,
+        "phoneOnlyBooking": 10,
+        "ownerVerified": 10
+      },
+      "gates": [
+        "No phone number: score 0.",
+        "Permanently closed: keeps 20% of its score."
+      ],
+      "chains": "A name that appears 3 or more times in one run is flagged as a likely chain (hidden by default)."
+    },
+    "profileFields": [
+      "name",
+      "company",
+      "niches[]",
+      "locations[]",
+      "limit (results per search, 1-100)",
+      "maxRecords (budget cap per run)",
+      "minScore",
+      "hideChains",
+      "hideNoPhone",
+      "weights{}",
+      "language",
+      "region"
+    ],
+    "toolFiles": {
+      "lib/score.mjs": "normalize + score (pure)",
+      "lib/profile.mjs": "profile defaults, validation, search plan, cost estimate",
+      "lib/outscraper.mjs": "the only network code",
+      "lib/csv.mjs": "CSV export (formula-safe)",
+      "cli/sterling.mjs": "command-line runner",
+      "fixtures/sample-response.json": "made-up sample data for tests",
+      "test/": "node --test suites",
+      "AGENTS.md": "rules for an AI agent working on the tool"
+    },
+    "csvColumns": [
+      "score",
+      "name",
+      "category",
+      "phone",
+      "city",
+      "region",
+      "reviews",
+      "rating",
+      "hours_gap",
+      "closed_days",
+      "online_booking",
+      "owner_verified",
+      "likely_chain",
+      "website",
+      "address",
+      "maps_url",
+      "why",
+      "place_id",
+      "source_query"
+    ]
+  },
+  "keysAndAccounts": [
+    {
+      "id": "s1",
+      "name": "Outscraper account",
+      "required": true,
+      "where": "https://app.outscraper.com",
+      "cost": "First 500 places a month free, then about $3 per 1,000 (pay as you go). Email/contact add-ons cost extra and are not used.",
+      "heldBy": "Partner only"
+    },
+    {
+      "id": "s2",
+      "name": "Outscraper API key",
+      "required": true,
+      "where": "https://app.outscraper.com/account/api",
+      "cost": "Free",
+      "heldBy": "Partner only: saved in the lead finder on the partner's device, or set as OUTSCRAPER_API_KEY in the partner's terminal. Never sent to Hirobius."
+    },
+    {
+      "id": "s4",
+      "name": "AI assistant (Claude or ChatGPT)",
+      "required": false,
+      "where": "https://claude.ai",
+      "cost": "Free plan is enough for the questions",
+      "heldBy": "Partner only"
+    },
+    {
+      "id": "s4b",
+      "name": "Claude Code (only to change the code yourself)",
+      "required": false,
+      "where": "https://code.claude.com/docs/en/overview",
+      "cost": "Claude Pro/Max plan, or an API key from https://console.anthropic.com",
+      "heldBy": "Partner only"
+    },
+    {
+      "id": "s5",
+      "name": "Node.js 20+ (only for the command-line tool)",
+      "required": false,
+      "where": "https://nodejs.org/en/download",
+      "cost": "Free",
+      "heldBy": "n/a"
+    }
+  ],
+  "setup": [
+    {
+      "id": "s1",
+      "title": "Create your Outscraper account",
+      "required": true,
+      "what": "Outscraper pulls business listings from Google Maps. Searches bill to this account, so the costs are yours and so is the data.",
+      "cost": "The first 500 places each month are free. After that, about $3 per 1,000 places, pay as you go. Extra add-ons like email finding cost more; the lead finder never uses them.",
+      "steps": [
+        "Go to [app.outscraper.com](https://app.outscraper.com) and sign up (Google sign-in works).",
+        "Confirm your email.",
+        "Add a payment method under **Billing** only when you need more than the free 500 a month. Check current prices on [outscraper.com/pricing](https://outscraper.com/pricing/)."
+      ],
+      "sendBack": "Nothing."
+    },
+    {
+      "id": "s2",
+      "title": "Create your API key and save it in the lead finder",
+      "required": true,
+      "what": "The key lets the lead finder run searches on your Outscraper account. It is like a password: keep it to yourself.",
+      "cost": "Free.",
+      "steps": [
+        "Open your [Outscraper API key page](https://app.outscraper.com/account/api) and create or copy your key.",
+        "Open the lead finder (the link is under **Updates** on this page).",
+        "Paste the key in step 1 and select **Save key**. Leave **Remember on this device** on if this is your own computer.",
+        "On a shared computer, turn **Remember** off, or select **Forget key** when you're done."
+      ],
+      "sendBack": "Nothing. **Never send your key to anyone, including us.**"
+    },
+    {
+      "id": "s3",
+      "title": "Run a test search",
+      "required": true,
+      "what": "Proves the key works and shows you what a lead list looks like. A 5-result search uses 5 of your free places.",
+      "cost": "Free (within the 500 a month).",
+      "steps": [
+        "In the lead finder, select **Try sample data** first. It shows made-up businesses and costs nothing.",
+        "In **Your profile**, keep one business type (for example `plumber`), add your city (for example `Austin, TX`), and set **Results per search** to 5.",
+        "Select **Find leads**. Open **Why this score** on a lead to see the reasons.",
+        "Select **Download CSV** to get the list as a spreadsheet."
+      ],
+      "sendBack": "Nothing, unless something breaks. Then send a screenshot of the error message."
+    },
+    {
+      "id": "s4",
+      "title": "Pick your AI assistant (recommended)",
+      "required": false,
+      "what": "You'll use it to answer our questions (Copy for AI) and, later, to work with your copy of the tool.",
+      "cost": "Free plans work for the questions. Changing the code yourself needs a paid plan or an API key.",
+      "steps": [
+        "For the questions: [Claude](https://claude.ai) or ChatGPT, any plan.",
+        "To change the tool's code yourself later: [Claude Code](https://code.claude.com/docs/en/overview), which needs a Claude Pro or Max plan or an API key from [console.anthropic.com](https://console.anthropic.com).",
+        "Never paste API keys into an AI chat."
+      ],
+      "sendBack": "Which assistant you use."
+    },
+    {
+      "id": "s5",
+      "title": "Run the tool on your own computer (optional)",
+      "required": false,
+      "what": "The same lead finder as a command-line tool, for scheduled runs or for your AI agent to customize. Skip this if the web finder is enough.",
+      "cost": "Free.",
+      "steps": [
+        "Install Node.js 20 or newer (the LTS version) from [nodejs.org](https://nodejs.org/en/download).",
+        "Download the tool (the zip under **Updates**) and unzip it.",
+        "In a terminal, in that folder: `npm test`, then `node cli/sterling.mjs --fixture fixtures/sample-response.json`.",
+        "For a live run, set your key in that terminal only: `export OUTSCRAPER_API_KEY=your-key` (Windows PowerShell: `$env:OUTSCRAPER_API_KEY=\"your-key\"`), then `node cli/sterling.mjs --profile your-profile.json --out runs`.",
+        "The tool's README explains every option. Your AI agent should read `AGENTS.md` first."
+      ],
+      "sendBack": "Nothing."
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "question": "Which business types do you want to sell to?",
+      "why": "Sets the default searches and which types score highest.",
+      "options": [
+        "Plumbers",
+        "HVAC",
+        "Electricians",
+        "Locksmiths",
+        "Garage door repair",
+        "Roofers",
+        "Pest control",
+        "Dentists",
+        "Chiropractors",
+        "Med spas",
+        "Vets",
+        "Auto repair",
+        "Law firms",
+        "Property managers",
+        "Other (name them)"
+      ],
+      "sendBack": "Your top 3 to 5, best first.",
+      "affects": "profile.niches, scoring tiers"
+    },
+    {
+      "id": "q2",
+      "question": "Where do you sell?",
+      "why": "Sets the cities and areas each search runs in.",
+      "sendBack": "Cities, metro areas or states, plus whether you work remotely nationwide.",
+      "affects": "profile.locations"
+    },
+    {
+      "id": "q3",
+      "question": "What does your voice agent do best?",
+      "why": "Changes what we score up. A booking-focused agent favors businesses with no online booking; an after-hours agent favors businesses closed evenings and weekends.",
+      "options": [
+        "Answers missed and after-hours calls",
+        "Books appointments into a calendar",
+        "Qualifies callers and texts the owner",
+        "Answers common questions",
+        "Makes follow-up calls",
+        "Other"
+      ],
+      "sendBack": "Which ones, and which one you lead with in a sales call.",
+      "affects": "scoring weights"
+    },
+    {
+      "id": "q4",
+      "question": "Describe your best customer so far",
+      "why": "Real wins tell us what a good lead looks like better than any rule.",
+      "sendBack": "1 to 3 businesses that bought (or would): type, size, roughly how many calls they get, and why they said yes. Names are optional.",
+      "affects": "scoring weights, niches"
+    },
+    {
+      "id": "q5",
+      "question": "What size of business fits?",
+      "why": "Owner-run shops decide fast; chains decide slowly and centrally.",
+      "options": [
+        "Solo or owner-run",
+        "Small team (2 to 10)",
+        "Multi-location",
+        "Franchises and chains"
+      ],
+      "sendBack": "The size range you want, and yes or no to hiding chains.",
+      "affects": "profile.hideChains, filters"
+    },
+    {
+      "id": "q6",
+      "question": "How many leads, and what monthly budget?",
+      "why": "Sets the per-run cap so a search never costs more than you planned.",
+      "options": [
+        "Free only (500 places a month)",
+        "Up to $10 a month",
+        "Up to $25 a month",
+        "$50 or more a month"
+      ],
+      "sendBack": "New leads you want per week, and your monthly Outscraper cap.",
+      "affects": "profile.maxRecords, profile.limit"
+    },
+    {
+      "id": "q7",
+      "question": "Where should leads go?",
+      "why": "We can export straight into the tool you already use instead of a CSV.",
+      "options": [
+        "CSV or Excel",
+        "Google Sheets",
+        "GoHighLevel",
+        "HubSpot",
+        "Close",
+        "A dialer",
+        "Other"
+      ],
+      "sendBack": "The tool, and how you get leads into it today.",
+      "affects": "export format, integrations"
+    },
+    {
+      "id": "q8",
+      "question": "Do you need owner names and emails?",
+      "why": "Outscraper can look up emails and contacts for each business, but it is a separate paid add-on that can cost several times more than the listings.",
+      "options": [
+        "No, phone numbers are enough",
+        "Yes, emails",
+        "Yes, owner names and emails"
+      ],
+      "sendBack": "Yes or no, and how you'd use them.",
+      "affects": "enrichment (paid add-on)"
+    },
+    {
+      "id": "q9",
+      "question": "How do you want to run it?",
+      "why": "Decides what we build for you.",
+      "options": [
+        "The web lead finder is enough",
+        "On my own computer, with my AI agent",
+        "My own hosted copy on my own accounts",
+        "On a schedule (for example, every Monday)"
+      ],
+      "sendBack": "One choice, or a combination.",
+      "affects": "delivery"
+    },
+    {
+      "id": "q10",
+      "question": "Anything to leave out?",
+      "why": "Keeps your list clean.",
+      "options": [
+        "Franchises",
+        "Existing customers",
+        "Businesses already using an AI receptionist",
+        "Certain competitors or areas"
+      ],
+      "sendBack": "A list, or \"nothing\".",
+      "affects": "filters"
+    }
+  ],
+  "instructionsForAssistant": "You are helping a sales partner of Hirobius set up and customize Sterling, a lead finder for selling AI voice agents (AI receptionists) to local businesses. The partner has just pasted this and said 'go'. Do not expect answers to be pasted already. HARD RULE: never ask for, accept, repeat or include any API key, password or token. If the partner pastes one, tell them to delete it from the chat, to rotate it at https://app.outscraper.com/account/api, and leave it out of everything you write. Keys stay with the partner; Hirobius never needs them. STEP 1, SETUP CHECK: ask in one message whether they have done the required setup items s1, s2 and s3 (listed in `setup`). For any not done, walk them through that item's steps one at a time until it is done or they choose to do it later. Optional items s4 and s5: ask once whether they want them. STEP 2, QUESTIONS: ask the items in `questions` one at a time, in order (q1 to q10). For each, say the question in plain words, give the options as a short list when there are options, and say what to send back. Accept short answers. If an answer is vague, ask one follow-up at most. If they skip one, mark it 'skipped' and move on. Keep it brisk and friendly; no jargon. STEP 3, PRODUCE TWO COPY-READY BLOCKS. (A) 'EMAIL TO ADRIAN' (to adrian@hirobius.com, subject 'Sterling: my answers'): a short greeting, then one line per question id (q1..q10) with the answer or 'skipped', then a line per setup item (s1..s5) saying done / not yet / not wanted, then a section 'SPEC FOR MY CUSTOM VERSION' with these headings: Target business types (ranked); Areas; What my voice agent sells on; Ideal customer; Size and exclusions; Volume and budget (leads per week, monthly cap, so maxRecords and limit); Where leads go (export or integration); Contact enrichment (yes/no); How I'll run it; Scoring changes (state which of the five weights in `tool.scoring.defaultWeights` to raise or lower and why, derived from q3 and q4, e.g. raise coverageGap for an after-hours agent, raise phoneOnlyBooking for a booking agent); Open questions. Sign with the partner's name and company. No keys or passwords anywhere. (B) 'PROFILE JSON': one JSON object the partner can import into the lead finder (Your profile > Import), using exactly the keys in `tool.profileFields`: version 1, name, company, niches (array of search phrases as typed into Google Maps, e.g. 'plumber'), locations (array like 'Austin, TX'), limit (default 20), maxRecords (from their budget: about 333 places per $1 after the free 500; default 200), minScore (default 0), hideChains (true unless they want chains), hideNoPhone true, language 'en', region 'us', and weights with the five keys from `tool.scoring.defaultWeights`, adjusted as in the spec. Valid JSON only, in a code block. STEP 4, TELL THE PARTNER EXACTLY: (i) copy block A into an email to adrian@hirobius.com and send it; (ii) save block B as a file named sterling-profile.json and import it in the lead finder under Your profile > Import, then select Save profile; (iii) Hirobius replies with the spec for their custom version, and new files appear under Updates in the portal.",
+  "outputFormat": "Two copy-ready blocks: A = EMAIL TO ADRIAN (answers q1-q10, setup status s1-s5, then SPEC FOR MY CUSTOM VERSION with the listed headings); B = PROFILE JSON (importable into the lead finder). No keys, passwords or tokens anywhere.",
+  "howToReply": "Email block A to adrian@hirobius.com. Import block B in the lead finder (Your profile > Import). Never send keys."
+}
+  </script>
+
+  <script type="text/markdown" id="doc-how">
+# How the lead finder works
+
+The lead finder searches Google Maps through **your** Outscraper account, then ranks every business by how much an AI voice agent would help it. Each lead comes with plain-English reasons, which double as your opening line.
+
+## What it searches
+
+Every business type in your profile, in every city or area in your profile. Two types in three cities is six searches. **Results per search** sets how many places each search returns, and **Max places per run** stops the run once that many are pulled, so a run never costs more than you planned.
+
+## How a lead is scored (0 to 100)
+
+| Signal | Default weight | What earns it |
+|---|---|---|
+| Business type | 35 | Urgent trades (plumber, HVAC, locksmith, garage door, roofing, pest control) score highest, then appointment businesses (dentist, chiropractor, med spa, vet, auto repair, law firm). Other types score low. |
+| Call volume | 25 | More Google reviews usually means a busier phone. About 300 reviews earns the full amount. |
+| After-hours gap | 20 | Closed weekends, closed some weekdays, or closing by 6 PM. Open 24 hours earns nothing. |
+| No online booking | 10 | No booking link on the listing, so every booking is a call. |
+| Owner verified | 10 | A claimed listing, so a decision-maker is reachable. |
+
+Two hard rules sit on top: **no phone number scores 0**, and a **permanently closed** business keeps only 20% of its score. A name that shows up 3 or more times is flagged as a **likely chain** and hidden by default.
+
+You can change the weights in **Your profile > Scoring weights**. Any numbers work; they're scaled to 100.
+
+## What it costs
+
+Outscraper gives 500 places free each month, then charges about $3 per 1,000. The finder shows the most a run can cost before you start. It never uses Outscraper's paid add-ons (like email finding).
+
+## What you get
+
+A ranked list with phone, area, reviews and the reasons for each score, and a **CSV** for your spreadsheet or CRM. Your last results stay on your device until you select **Clear results**.
+  </script>
+  <script type="text/markdown" id="doc-keys">
+# Keys and accounts
+
+Everything here is **yours**. Hirobius never needs, receives or stores any of it.
+
+| What | Needed? | Where | Cost |
+|---|---|---|---|
+| Outscraper account | Yes | [app.outscraper.com](https://app.outscraper.com) | 500 places a month free, then about $3 per 1,000 |
+| Outscraper API key | Yes | [Your API key page](https://app.outscraper.com/account/api) | Free |
+| AI assistant (Claude or ChatGPT) | Recommended | [claude.ai](https://claude.ai) | Free plan is enough for the questions |
+| Claude Code | Only to change the code yourself | [Claude Code](https://code.claude.com/docs/en/overview) | Claude Pro or Max, or an API key from [console.anthropic.com](https://console.anthropic.com) |
+| Node.js 20+ | Only for the command-line tool | [nodejs.org](https://nodejs.org/en/download) | Free |
+
+## Where the key goes
+
+- **Web lead finder:** paste it in step 1 and select **Save key**. It's kept in your browser on your device.
+- **Command-line tool:** set it in your terminal for that session: `export OUTSCRAPER_API_KEY=your-key` (Windows PowerShell: `$env:OUTSCRAPER_API_KEY="your-key"`). Don't save it in a file you share.
+
+## If a key leaks
+
+Open your [API key page](https://app.outscraper.com/account/api), make a new key, delete the old one, and save the new one in the lead finder.
+  </script>
+  <script type="text/markdown" id="doc-privacy">
+# Your keys and data
+
+**Short version:** your Outscraper key and your results stay on your device. Searches go straight from your browser to Outscraper and bill to your account.
+
+## Where things live
+
+| Thing | Where it's kept | Who can see it |
+|---|---|---|
+| Your Outscraper key | Your browser on your device (or just the open tab, if **Remember** is off) | You and Outscraper |
+| Your profile | Your browser on your device | You, plus anyone you send the export to |
+| Your results | Your browser, until you select **Clear results** | You |
+| Your answers to our questions | The email you send us | You and Hirobius |
+
+## What this site's server sees
+
+Only that the pages were loaded. The lead finder talks to Outscraper directly from your browser, and the page is locked down so it can only send data to Outscraper. Your key never reaches this site's server or Hirobius.
+
+Like any website, this site runs code that Hirobius wrote. You can read all of it in the tool download. If you want complete separation, run the command-line tool on your own computer, or ask for your own hosted copy on your own accounts (question 9).
+
+## Good habits
+
+- On a shared computer, turn **Remember on this device** off, or select **Forget key** when you're done.
+- Never paste a key into an email or an AI chat. If you do, make a new key and delete the old one.
+- This portal is behind a password. Don't share it; ask us if someone else on your team needs access.
+  </script>
+  <script type="text/markdown" id="doc-responsible">
+# Using leads responsibly
+
+The lead finder gives you a list. How you contact people is on you, so here are the basics. This is not legal advice; check the rules where you sell.
+
+## The data is unverified
+
+Listings come from Google Maps and can be out of date. Check a business is real and open before you reach out, and never use the data for anything but contacting the business about your service.
+
+## Calling and texting
+
+- **Calling businesses yourself** is generally allowed in the US, but check the [National Do Not Call Registry](https://telemarketing.donotcall.gov) rules and your state's rules, some of which are stricter.
+- **Texting** needs more care: many states and carriers require consent first.
+- **AI voices are robocalls.** The FCC ruled in 2024 that calls using AI-generated voices count as "artificial voice" calls, which need the person's prior consent ([FCC announcement](https://www.fcc.gov/document/fcc-makes-ai-generated-voices-robocalls-illegal)). Don't cold-call prospects with your voice agent. Call as yourself, email, or visit, and demo the agent once they agree.
+
+## Email
+
+Say who you are, include a real address, and honor opt-outs right away (the CAN-SPAM basics).
+  </script>
+  <script type="text/markdown" id="doc-custom">
+# Getting your custom version
+
+The lead finder you have now works for most voice-agent sellers. Your answers let us tune it to you.
+
+## How it works
+
+1. **You answer the questions.** Select **Copy for AI**, paste it into your assistant, and say "go". It asks one question at a time.
+2. **Your assistant writes two things:** an email to Adrian with your answers and a short spec, and a profile file you can import into the lead finder right away.
+3. **We write the spec** for your version and confirm it with you.
+4. **We build it and hand it over here**, under Updates, with setup steps.
+
+## What we can change
+
+- The business types and areas it searches, and how each is scored.
+- Filters: chains, franchises, existing customers, businesses already using an AI receptionist.
+- Where leads go: Google Sheets, your CRM (for example GoHighLevel or HubSpot), or a dialer.
+- Owner names and emails (an Outscraper paid add-on, on your account).
+- Scheduled runs, and your own hosted copy on your own accounts.
+
+Your keys and accounts stay yours the whole way through.
+  </script>
+
+  <main id="fallback">
+    <p>Loading the portal… If this message stays, the shared portal service may be
+    temporarily unavailable. Email adrian@hirobius.com.</p>
+  </main>
+
+  <script src="https://portal-kit-adrian-6234s-projects.vercel.app/releases/v20/portal.js" defer></script>
+</body>
+</html>
