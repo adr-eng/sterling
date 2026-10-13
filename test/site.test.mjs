@@ -87,3 +87,10 @@ test('the site referrer policy keeps same-origin form posts working', () => {
   assert.ok(policies.length > 0, 'a Referrer-Policy is set');
   for (const v of policies) assert.notEqual(v, 'no-referrer');
 });
+
+test('every page pins the same, current portal-kit release (HDS type)', () => {
+  const pins = new Set();
+  for (const f of ['index.html', 'finder.html', 'auth/pages.mjs']) for (const m of read(f).matchAll(/\/releases\/(v\d+)\//g)) pins.add(m[1]);
+  assert.deepEqual([...pins], ['v21']);
+  assert.doesNotMatch(read('finder.css'), /Satoshi|font-weight:\s*600/);
+});

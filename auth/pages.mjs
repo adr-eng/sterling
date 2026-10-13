@@ -15,7 +15,7 @@
  * logo, add brand/logo.svg and set BRAND_LOGO to '/brand/logo.svg'.
  */
 
-const KIT = 'https://portal-kit-adrian-6234s-projects.vercel.app/releases/v20/theme.css';
+const KIT = 'https://portal-kit-adrian-6234s-projects.vercel.app/releases/v21/theme.css';
 const CONTACT = 'adrian@hirobius.com';
 export const BRAND_LOGO = null;
 
@@ -23,7 +23,7 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&a
 
 const CSS = `
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg,#f3f3f4);color:var(--ink,#141414);font-family:var(--sans,'Satoshi',system-ui,sans-serif);line-height:1.55;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg,#f3f3f4);color:var(--ink,#141414);font-family:var(--sans,'Plus Jakarta Sans',system-ui,sans-serif);line-height:1.55;-webkit-font-smoothing:antialiased}
 .au-auth{min-height:100%;display:grid;place-items:center;align-content:center;gap:20px;padding:32px 16px}
 .au-card{width:100%;max-width:400px;background:var(--panel,#fff);border:1px solid var(--line,#e4e4e4);border-radius:16px;overflow:hidden}
 .au-card>*{padding:24px}
@@ -37,7 +37,7 @@ p{margin:0}.au-sub{color:var(--muted,#555);font-size:.88rem;text-wrap:balance}
 form{display:grid;gap:16px;margin:0}
 .au-field{display:grid;gap:6px}
 .au-field-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-label,.au-lbl{font-size:.85rem;font-weight:600;color:var(--ink,#141414)}
+label,.au-lbl{font-size:.85rem;font-weight:500;color:var(--ink,#141414)}
 .au-field-top a{font-size:.85rem;color:var(--muted,#555);text-decoration:none}
 .au-field-top a:hover{color:var(--ink,#141414);text-decoration:underline}
 .au-input-wrap{position:relative}
@@ -50,14 +50,14 @@ input:focus{outline:2px solid var(--ink,#141414);outline-offset:1px;border-color
 .au-reveal svg{width:18px;height:18px}
 .au-check{display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:400;color:var(--muted,#555);cursor:pointer;min-height:24px}
 .au-check input{width:18px;height:18px;margin:0;accent-color:var(--ink,#141414)}
-.au-btn{font:inherit;font-size:.95rem;font-weight:600;min-height:46px;padding:.7rem 1rem;border:0;border-radius:10px;background:var(--accent,#141414);color:var(--panel,#fff);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.au-btn{font:inherit;font-size:.95rem;font-weight:500;min-height:46px;padding:.7rem 1rem;border:0;border-radius:10px;background:var(--accent,#141414);color:var(--panel,#fff);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .au-btn svg{width:16px;height:16px}
 .au-btn.au-ghost{background:transparent;color:var(--ink,#141414);border:1px solid var(--line-strong,#cfcfcf)}
 .au-btn[hidden]{display:none}
 button:focus-visible,a:focus-visible,.au-check input:focus-visible{outline:2px solid var(--ink,#141414);outline-offset:2px}
 a{color:inherit;text-underline-offset:2px}
-.au-card-foot a{color:var(--ink,#141414);font-weight:600}
-.au-err{color:#b3372f;font-size:.9rem}.au-ok{color:var(--ok,#218358);font-size:.9rem;font-weight:600}
+.au-card-foot a{color:var(--ink,#141414);font-weight:500}
+.au-err{color:#b3372f;font-size:.9rem}.au-ok{color:var(--ok,#218358);font-size:.9rem;font-weight:500}
 .au-note{color:var(--muted,#555);font-size:.82rem}
 .au-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px}
 .au-meta{margin:0;font-size:.8rem;color:var(--muted,#555);text-align:center}
