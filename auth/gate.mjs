@@ -6,6 +6,7 @@
  * session cookie, so it never touches storage.
  *
  *   /api/auth     passes through (the auth function checks its own input)
+ *   /brand/*      passes through (sign-in page script and, later, the logo)
  *   /setup        the choose-your-password page (needs ?code= from Adrian's link)
  *   /password     change password (signed in only)
  *   anything else the site, if signed in; otherwise the sign-in page
@@ -17,7 +18,7 @@ import { loginPage, setupPage, changePage, notReadyPage, htmlResponse } from './
 export async function gate(request, { env, now } = {}) {
   const url = new URL(request.url);
   const path = url.pathname;
-  if (path === '/api/auth') return undefined;
+  if (path === '/api/auth' || path.startsWith('/brand/')) return undefined; // auth function; sign-in page assets
   if (!env.SESSION_SECRET) return htmlResponse(notReadyPage(), 503);
   if (path === '/setup') return htmlResponse(setupPage({ code: url.searchParams.get('code') || '' }));
 
