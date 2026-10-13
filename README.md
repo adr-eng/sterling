@@ -21,25 +21,24 @@ talk to Outscraper. Hirobius never receives, stores or needs the key.
 | `links.json` | The portal's Links section (synced into the page). |
 | `test/` | Checks that the page renders, the handoff matches the page and the code, and the zip is current. |
 
-## Sign-in: the partner sets their own password
+## Sign-in: everyone sets their own password
 
-Nobody shares a password. You send a one-time **setup link**; the partner picks
-their password; only a PBKDF2 hash is stored (private Vercel Blob store), so you
-never see it. Sessions are signed cookies that last 14 days. The site is
-fail-closed: without `SESSION_SECRET` it shows "not set up yet".
+Two people sign in, each with a password only they know: the partner and you
+(admin). Each sets it from a one-time **setup link**; only a PBKDF2 hash is
+stored (private Vercel Blob store). Sessions are signed cookies that last 14
+days. Fail-closed: without `SESSION_SECRET` the site shows "not set up yet".
 
 | Env var (Vercel) | What it does |
 |---|---|
-| `SESSION_SECRET` | Signs sign-in cookies. Change it to sign everyone out. |
-| `SETUP_CODE` | The code in the setup link. Each value works once. |
-| `SITE_PASSWORD` | Optional: your own admin password, to view the portal yourself. |
+| `SESSION_SECRET` | Signs sign-in cookies. Change it (and redeploy) to sign everyone out. |
+| `SETUP_CODE` | The partner's first setup link: `/setup?code=<SETUP_CODE>`. Replaced once you make a link on /admin. |
+| `ADMIN_SETUP_CODE` | Your setup link: `/setup?code=<ADMIN_SETUP_CODE>`. Set a new value and redeploy if you ever forget your password. |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected. |
 
-- **Setup link:** `https://<site>/setup?code=<SETUP_CODE>`. Text it to the partner.
-- **Partner forgot their password:** set a new `SETUP_CODE` in Vercel → Settings → Environment Variables, redeploy, send the new link.
-- **Partner wants a new password:** they change it themselves at `/password` (linked from the portal and the lead finder).
+- **/admin** (you only): see whether the partner has set a password, and make a new partner setup link in one click (that's the reset: no Vercel steps). Each link works once; a new one replaces the last.
+- **/password**: either of you changes your own password.
 
-Code: `middleware.js` → `auth/gate.mjs` (checks the cookie on every request), `api/auth.js` → `auth/handler.mjs` (sign in, set, change, sign out), `auth/store.mjs` (Blob), `auth/pages.mjs` (the forms).
+Code: `middleware.js` → `auth/gate.mjs` (checks the cookie on every request), `api/auth.js` → `auth/handler.mjs` (sign in, set, change, sign out, admin), `auth/store.mjs` (Blob), `auth/pages.mjs` (the forms). `/admin` is a rewrite to `/api/auth?do=admin` in `vercel.json`.
 
 ## Hand the partner a file
 
