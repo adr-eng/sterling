@@ -2,8 +2,9 @@
  * auth/pages.mjs
  *
  * The sign-in, set-password, change-password and admin pages. Plain HTML
- * strings: one card with a header (logo slot, serif heading), a body (the
- * form) and a footer, plus a hard offset shadow. Fonts and colors come from
+ * strings: one card with a header (logo slot, heading), a body (the form)
+ * and a footer. HDS rules hold here too: kit sans only, sentence case, no
+ * shadows (test/auth.test.mjs checks). Fonts and colors come from
  * the kit's theme.css; every var() has a fallback so the pages render even if
  * the kit host is down. Everything interpolated is escaped.
  *
@@ -24,32 +25,32 @@ const CSS = `
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;background:var(--bg,#f3f3f4);color:var(--ink,#141414);font-family:var(--sans,'Satoshi',system-ui,sans-serif);line-height:1.55;-webkit-font-smoothing:antialiased}
 .au-auth{min-height:100%;display:grid;place-items:center;align-content:center;gap:20px;padding:32px 16px}
-.au-card{width:100%;max-width:400px;background:var(--panel,#fff);border:1px solid var(--line-strong,#cfcfcf);border-radius:4px;box-shadow:8px 8px 0 var(--line,#e4e4e4)}
+.au-card{width:100%;max-width:400px;background:var(--panel,#fff);border:1px solid var(--line,#e4e4e4);border-radius:16px;overflow:hidden}
 .au-card>*{padding:24px}
 .au-card-head{text-align:center;display:grid;justify-items:center;gap:6px;padding-top:32px}
 .au-card-body{border-top:1px solid var(--line,#e4e4e4);display:grid;gap:16px}
 .au-card-foot{border-top:1px solid var(--line,#e4e4e4);text-align:center;font-size:.85rem;color:var(--muted,#555);padding-top:16px;padding-bottom:16px}
-.au-brand{margin:0 0 6px;font-size:.72rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.au-brand{margin:0 0 4px;font-size:.95rem;font-weight:700;letter-spacing:-.01em}
 .au-brand img{display:block;height:28px;width:auto}
-h1{margin:0;font-family:ui-serif,'New York',Georgia,Cambria,'Times New Roman',serif;font-weight:400;font-size:2rem;line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+h1{margin:0;font-weight:700;font-size:1.6rem;line-height:1.2;letter-spacing:-.015em;text-wrap:balance}
 p{margin:0}.au-sub{color:var(--muted,#555);font-size:.88rem;text-wrap:balance}
 form{display:grid;gap:16px;margin:0}
 .au-field{display:grid;gap:6px}
 .au-field-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-label,.au-lbl{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted,#555)}
-.au-field-top a{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted,#555);text-decoration:none}
+label,.au-lbl{font-size:.85rem;font-weight:600;color:var(--ink,#141414)}
+.au-field-top a{font-size:.85rem;color:var(--muted,#555);text-decoration:none}
 .au-field-top a:hover{color:var(--ink,#141414);text-decoration:underline}
 .au-input-wrap{position:relative}
-input[type=password],input[type=text]{width:100%;font:inherit;font-size:1rem;padding:.7rem .85rem;border-radius:6px;border:1px solid var(--line-strong,#cfcfcf);background:var(--panel,#fff);color:var(--ink,#141414)}
+input[type=password],input[type=text]{width:100%;font:inherit;font-size:1rem;padding:.7rem .85rem;border-radius:10px;border:1px solid var(--line-strong,#cfcfcf);background:var(--panel,#fff);color:var(--ink,#141414)}
 .au-input-wrap input{padding-right:3rem}
 input:focus{outline:2px solid var(--ink,#141414);outline-offset:1px;border-color:var(--ink,#141414)}
-.au-reveal{position:absolute;top:0;right:0;height:100%;width:44px;display:grid;place-items:center;border:0;background:transparent;color:var(--muted,#555);cursor:pointer;border-radius:0 6px 6px 0}
+.au-reveal{position:absolute;top:0;right:0;height:100%;width:44px;display:grid;place-items:center;border:0;background:transparent;color:var(--muted,#555);cursor:pointer;border-radius:0 10px 10px 0}
 .au-reveal:hover{color:var(--ink,#141414)}
 .au-reveal[hidden]{display:none}
 .au-reveal svg{width:18px;height:18px}
-.au-check{display:flex;align-items:center;gap:10px;font-size:.88rem;letter-spacing:0;text-transform:none;font-weight:400;color:var(--muted,#555);cursor:pointer;min-height:24px}
+.au-check{display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:400;color:var(--muted,#555);cursor:pointer;min-height:24px}
 .au-check input{width:18px;height:18px;margin:0;accent-color:var(--ink,#141414)}
-.au-btn{font:inherit;font-size:.95rem;font-weight:600;min-height:46px;padding:.7rem 1rem;border:0;border-radius:6px;background:var(--accent,#141414);color:var(--panel,#fff);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.au-btn{font:inherit;font-size:.95rem;font-weight:600;min-height:46px;padding:.7rem 1rem;border:0;border-radius:10px;background:var(--accent,#141414);color:var(--panel,#fff);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .au-btn svg{width:16px;height:16px}
 .au-btn.au-ghost{background:transparent;color:var(--ink,#141414);border:1px solid var(--line-strong,#cfcfcf)}
 .au-btn[hidden]{display:none}
@@ -59,7 +60,7 @@ a{color:inherit;text-underline-offset:2px}
 .au-err{color:#b3372f;font-size:.9rem}.au-ok{color:var(--ok,#218358);font-size:.9rem;font-weight:600}
 .au-note{color:var(--muted,#555);font-size:.82rem}
 .au-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px}
-.au-meta{margin:0;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#555);text-align:center;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px}
+.au-meta{margin:0;font-size:.8rem;color:var(--muted,#555);text-align:center}
 
 .au-copy-row{display:flex;gap:8px}.au-copy-row input{flex:1;min-width:0;font-size:.85rem}
 .au-copy-row .au-btn{width:auto;min-height:0}
@@ -185,7 +186,7 @@ export function adminPage({ partner = null, invite = null, newLink = '' } = {}) 
 ${submit(partner ? 'Reset partner password: new link' : 'New partner setup link')}
 </form>`,
     foot: `<span class="au-links"><a href="/">Portal</a><a href="/finder.html">Lead finder</a><a href="/password">My password</a><a href="/api/auth?do=logout">Sign out</a></span>`,
-    meta: ['Admin', 'Signed in as Adrian'],
+    meta: ['Signed in as Adrian'],
   });
 }
 
