@@ -1,77 +1,117 @@
 /**
  * auth/handler.mjs
  *
- * The form posts behind /api/auth: sign in, set a password from a setup link,
- * change a password, sign out. Storage is injected (`store.load()` /
- * `store.save(record)`) so this is tested without Vercel.
+ * Everything behind /api/auth: sign in, set a password from a setup link,
+ * change a password, sign out, and Adrian's admin page (/admin rewrites here).
+ * Storage is injected (`store.load(name)` / `store.save(name, record)`, names
+ * "partner" | "admin" | "invite") so this is tested without Vercel.
  *
- * Env:
- *   SESSION_SECRET  signs session cookies (required; change it to sign everyone out)
- *   SETUP_CODE      the code in Adrian's setup link. One use per value: to
- *                   reset the partner's password, set a new value and redeploy.
- *   SITE_PASSWORD   optional admin password for Adrian's own access
+ * Two people, each with their own password that only they know:
+ *   partner  sets it from a setup link: the newest one made on /admin, or, until
+ *            one is made there, /setup?code=SETUP_CODE
+ *   admin    Adrian; sets it from /setup?code=ADMIN_SETUP_CODE
+ * Every setup code works once. Env: SESSION_SECRET (required), SETUP_CODE,
+ * ADMIN_SETUP_CODE.
  */
 
 import {
   signSession, verifySession, readCookie, sessionCookie, clearCookie, SESSION_COOKIE,
   hashPassword, verifyPassword, checkNewPassword, sameText, sha256Hex,
 } from './core.mjs';
-import { loginPage, setupPage, changePage, notReadyPage, htmlResponse } from './pages.mjs';
+import { loginPage, setupPage, changePage, adminPage, notReadyPage, htmlResponse } from './pages.mjs';
 
 const redirect = (to, cookie) => new Response(null, { status: 303, headers: { Location: to, 'Cache-Control': 'no-store', ...(cookie ? { 'Set-Cookie': cookie } : {}) } });
+const ROLES = ['partner', 'admin'];
+const USED_CODES_KEPT = 50;
+
+/** Setup codes already spent on this record (older records kept one). */
+const usedCodes = (rec) => (rec ? rec.usedCodes ?? (rec.setupCodeHash ? [rec.setupCodeHash] : []) : []);
+
+/** A random setup code like "k7m2q-x9p4t-...", ~98 bits. */
+function newCode() {
+  const alphabet = 'abcdefghjkmnpqrstuvwxyz23456789';
+  const bytes = globalThis.crypto.getRandomValues(new Uint8Array(20));
+  const s = [...bytes].map((b) => alphabet[b % alphabet.length]).join('');
+  return s.match(/.{5}/g).join('-');
+}
+
+/** Which role a setup code is for, or null. The newest admin-made link replaces SETUP_CODE. */
+async function roleForCode(code, env, store) {
+  if (env.ADMIN_SETUP_CODE && (await sameText(code, env.ADMIN_SETUP_CODE))) return 'admin';
+  const invite = await store.load('invite');
+  if (invite) return (await sameText(await sha256Hex(code), invite.codeHash)) ? 'partner' : null;
+  if (env.SETUP_CODE && (await sameText(code, env.SETUP_CODE))) return 'partner';
+  return null;
+}
 
 export async function handleAuth(request, { env, store, now, iterations } = {}) {
   const url = new URL(request.url);
   const action = url.searchParams.get('do');
   if (!env.SESSION_SECRET) return htmlResponse(notReadyPage(), 503);
 
+  const session = await verifySession(readCookie(request.headers.get('cookie'), SESSION_COOKIE), env.SESSION_SECRET, { now });
+  const stamp = () => new Date(now ?? Date.now()).toISOString();
+  const signIn = async (role, to = '/') => redirect(to, sessionCookie(await signSession(role, env.SESSION_SECRET, { now })));
+
   if (action === 'logout') return redirect('/', clearCookie());
+
+  if (action === 'admin' && request.method === 'GET') {
+    if (session?.role !== 'admin') return htmlResponse(loginPage(), 401);
+    return htmlResponse(adminPage({ partner: await store.load('partner'), invite: await store.load('invite') }));
+  }
+
   if (request.method !== 'POST') return redirect('/');
 
   // Forms only ever post from this site.
   const origin = request.headers.get('origin');
   if (origin && origin !== url.origin) return new Response('Forbidden', { status: 403 });
-
   const form = new URLSearchParams(await request.text());
-  const signIn = async (role, to = '/') => redirect(to, sessionCookie(await signSession(role, env.SESSION_SECRET, { now })));
 
   if (action === 'login') {
     const password = form.get('password') || '';
-    if (env.SITE_PASSWORD && (await sameText(password, env.SITE_PASSWORD))) return signIn('admin');
-    const record = await store.load();
-    if (record && (await verifyPassword(password, record))) return signIn('partner');
+    for (const role of ROLES) {
+      const record = await store.load(role);
+      if (record && (await verifyPassword(password, record))) return signIn(role, role === 'admin' ? '/admin' : '/');
+    }
     return htmlResponse(loginPage({ error: true }), 401);
   }
 
   if (action === 'setup') {
     const code = form.get('code') || '';
-    const again = (error, status) => htmlResponse(setupPage({ code, error }), status);
-    if (!env.SETUP_CODE || !(await sameText(code, env.SETUP_CODE))) {
-      return htmlResponse(setupPage({ invalid: true }), 403);
-    }
-    const codeHash = await sha256Hex(env.SETUP_CODE);
-    const record = await store.load();
-    if (record && record.setupCodeHash === codeHash) {
-      return htmlResponse(setupPage({ used: true }), 409);
-    }
+    const role = code ? await roleForCode(code, env, store) : null;
+    if (!role) return htmlResponse(setupPage({ invalid: true }), 403);
+    const codeHash = await sha256Hex(code);
+    const record = await store.load(role);
+    const spent = usedCodes(record);
+    if (spent.includes(codeHash)) return htmlResponse(setupPage({ used: true }), 409);
     const problem = checkNewPassword(form.get('password'), form.get('confirm'));
-    if (problem) return again(problem, 400);
-    await store.save({ ...(await hashPassword(form.get('password'), { iterations })), setupCodeHash: codeHash, updatedAt: new Date(now ?? Date.now()).toISOString() });
-    return signIn('partner');
+    if (problem) return htmlResponse(setupPage({ code, error: problem }), 400);
+    await store.save(role, {
+      ...(await hashPassword(form.get('password'), { iterations })),
+      usedCodes: [...spent, codeHash].slice(-USED_CODES_KEPT),
+      updatedAt: stamp(),
+    });
+    return signIn(role, role === 'admin' ? '/admin' : '/');
   }
 
   if (action === 'change') {
-    const session = await verifySession(readCookie(request.headers.get('cookie'), SESSION_COOKIE), env.SESSION_SECRET, { now });
     if (!session) return htmlResponse(loginPage(), 401);
-    if (session.role !== 'partner') return htmlResponse(changePage({ role: session.role }), 403);
-    const record = await store.load();
+    const record = await store.load(session.role);
     if (!record || !(await verifyPassword(form.get('current') || '', record))) {
-      return htmlResponse(changePage({ error: 'Your current password is not right.' }), 401);
+      return htmlResponse(changePage({ role: session.role, error: 'Your current password is not right.' }), 401);
     }
     const problem = checkNewPassword(form.get('password'), form.get('confirm'));
-    if (problem) return htmlResponse(changePage({ error: problem }), 400);
-    await store.save({ ...(await hashPassword(form.get('password'), { iterations })), setupCodeHash: record.setupCodeHash, updatedAt: new Date(now ?? Date.now()).toISOString() });
-    return signIn('partner', '/password?done=1');
+    if (problem) return htmlResponse(changePage({ role: session.role, error: problem }), 400);
+    await store.save(session.role, { ...(await hashPassword(form.get('password'), { iterations })), usedCodes: usedCodes(record), updatedAt: stamp() });
+    return signIn(session.role, '/password?done=1');
+  }
+
+  if (action === 'invite') {
+    if (session?.role !== 'admin') return htmlResponse(loginPage(), 401);
+    const code = newCode();
+    await store.save('invite', { codeHash: await sha256Hex(code), createdAt: stamp() });
+    const link = `${url.origin}/setup?code=${code}`;
+    return htmlResponse(adminPage({ partner: await store.load('partner'), newLink: link }));
   }
 
   return redirect('/');

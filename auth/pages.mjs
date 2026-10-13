@@ -81,11 +81,7 @@ ${pw('confirm', 'Type it again', 'new-password', 'minlength="10"')}
 }
 
 export function changePage({ error = '', done = false, role = 'partner' } = {}) {
-  if (role !== 'partner') {
-    return page('Change password', `<h1>Change password</h1>
-<p class="sub">You're signed in with the admin password. Only the partner can change their own password here. To reset it for them, change SETUP_CODE in Vercel and send a new setup link.</p>
-<p class="links"><a href="/">Back to the portal</a><a href="/api/auth?do=logout">Sign out</a></p>`);
-  }
+  const adminLink = role === 'admin' ? '<a href="/admin">Admin</a>' : '';
   return page('Change password', `<h1>Change your password</h1>
 ${done ? '<p class="ok" role="status">Password changed.</p>' : ''}
 ${errLine(error)}
@@ -95,7 +91,35 @@ ${pw('password', 'New password (at least 10 characters)', 'new-password', 'minle
 ${pw('confirm', 'Type the new one again', 'new-password', 'minlength="10"')}
 <button type="submit">Change password</button>
 </form>
-<p class="links"><a href="/">Back to the portal</a><a href="/api/auth?do=logout">Sign out</a></p>`);
+<p class="links"><a href="/">Back to the portal</a>${adminLink}<a href="/api/auth?do=logout">Sign out</a></p>`);
+}
+
+const when = (iso) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }) + ' UTC';
+};
+
+/**
+ * Adrian's admin page: who has a password, and a one-click new setup link
+ * for the partner (shown once, right after it's made).
+ */
+export function adminPage({ partner = null, invite = null, newLink = '' } = {}) {
+  const status = partner
+    ? `Partner password set ${esc(when(partner.updatedAt))}.`
+    : 'The partner has not set a password yet.';
+  const pending = invite && !newLink ? `<p class="note">A setup link made ${esc(when(invite.createdAt))} is waiting to be used. Making a new one replaces it.</p>` : '';
+  const fresh = newLink
+    ? `<p class="ok" role="status">New setup link. Copy it now; it won't be shown again.</p>
+<label>Partner setup link<input type="text" readonly value="${esc(newLink)}"/></label>
+<p class="note">Works once. Their old password stops working once they use it.</p>`
+    : '';
+  return page('Admin', `<h1>Sterling admin</h1>
+<p class="sub">${status}</p>
+${fresh}${pending}
+<form method="POST" action="/api/auth?do=invite">
+<button type="submit">${partner ? 'Reset partner password: new setup link' : 'New partner setup link'}</button>
+</form>
+<p class="links"><a href="/">Open the portal</a><a href="/finder.html">Lead finder</a><a href="/password">Change my password</a><a href="/api/auth?do=logout">Sign out</a></p>`);
 }
 
 export function notReadyPage() {

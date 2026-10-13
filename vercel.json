@@ -67,5 +67,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/api/auth?do=admin"
+    }
   ]
 }
