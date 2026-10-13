@@ -51,7 +51,8 @@ test('gate: fail-closed without a secret; sign-in page when signed out; open whe
   assert.equal((await gate(get('/'), { env: {} })).status, 503);
   const out = await gate(get('/finder.html'), { env: ENV });
   assert.equal(out.status, 401);
-  assert.match(await out.text(), /Enter your password/);
+  assert.match(await out.text(), /Welcome back/);
+  assert.equal(await gate(get('/brand/auth-ui.js'), { env: ENV }), undefined, 'sign-in page assets load signed out');
   const cookie = `${SESSION_COOKIE}=${await signSession('partner', SECRET)}`;
   assert.equal(await gate(get('/finder.html', cookie), { env: ENV }), undefined);
   assert.equal(await gate(get('/api/auth'), { env: ENV }), undefined, 'the auth function handles its own requests');
@@ -191,4 +192,24 @@ test('cross-site browser posts are refused, whatever Origin says', async () => {
     const res = await handleAuth(post('login', { password: 'x' }, { origin, site }), ctx(memStore()));
     assert.equal(res.status, 403, `origin=${origin} sec-fetch-site=${site}`);
   }
+});
+
+test('"Keep me signed in": checked lasts 14 days; unchecked ends with the browser and within 12 hours', async () => {
+  const store = memStore({ partner: await hashPassword('partner password 1', { iterations: FAST }) });
+  const kept = await handleAuth(post('login', { password: 'partner password 1', remember: '1' }), ctx(store));
+  assert.match(kept.headers.get('set-cookie'), /Max-Age=1209600/);
+  const now = Date.now();
+  const brief = await handleAuth(post('login', { password: 'partner password 1' }), { ...ctx(store), now });
+  assert.doesNotMatch(brief.headers.get('set-cookie'), /Max-Age/);
+  const token = readCookie(cookieFrom(brief), SESSION_COOKIE);
+  assert.deepEqual(await verifySession(token, SECRET, { now: now + 11 * 3_600_000 }), { role: 'partner' });
+  assert.equal(await verifySession(token, SECRET, { now: now + 13 * 3_600_000 }), null);
+});
+
+test('sign-in pages: show/hide and copy buttons start hidden, so the forms work without the script', async () => {
+  const { loginPage, adminPage } = await import('../auth/pages.mjs');
+  const login = loginPage();
+  assert.match(login, /data-reveal="f-password"[^>]*hidden/);
+  assert.match(login, /src="\/brand\/auth-ui\.js"/);
+  assert.match(adminPage({ newLink: 'https://x.example/setup?code=a' }), /data-copy="new-link"[^>]*hidden/);
 });

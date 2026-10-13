@@ -62,9 +62,14 @@ export function readCookie(header, name) {
   return null;
 }
 
+/** The session cookie. `days: null` makes it end when the browser closes. */
 export function sessionCookie(token, days = SESSION_DAYS) {
-  return `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${days * 86_400}`;
+  const life = days === null ? '' : `; Max-Age=${Math.round(days * 86_400)}`;
+  return `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; Secure; SameSite=Lax${life}`;
 }
+
+/** How long a sign-in lasts without "Keep me signed in". */
+export const SHORT_SESSION_DAYS = 0.5;
 export const clearCookie = () => `${SESSION_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
 
 async function pbkdf2(password, salt, iterations) {

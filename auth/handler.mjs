@@ -15,7 +15,7 @@
  */
 
 import {
-  signSession, verifySession, readCookie, sessionCookie, clearCookie, SESSION_COOKIE,
+  signSession, verifySession, readCookie, sessionCookie, clearCookie, SESSION_COOKIE, SHORT_SESSION_DAYS,
   hashPassword, verifyPassword, checkNewPassword, sameText, sha256Hex,
 } from './core.mjs';
 import { loginPage, setupPage, changePage, adminPage, notReadyPage, htmlResponse } from './pages.mjs';
@@ -65,7 +65,10 @@ export async function handleAuth(request, { env, store, now, iterations } = {}) 
 
   const session = await verifySession(readCookie(request.headers.get('cookie'), SESSION_COOKIE), env.SESSION_SECRET, { now });
   const stamp = () => new Date(now ?? Date.now()).toISOString();
-  const signIn = async (role, to = '/') => redirect(to, sessionCookie(await signSession(role, env.SESSION_SECRET, { now })));
+  // remember=false: a 12-hour session in a cookie that ends when the browser closes.
+  const signIn = async (role, to = '/', remember = true) => redirect(to, remember
+    ? sessionCookie(await signSession(role, env.SESSION_SECRET, { now }))
+    : sessionCookie(await signSession(role, env.SESSION_SECRET, { now, days: SHORT_SESSION_DAYS }), null));
 
   if (action === 'logout') return redirect('/', clearCookie());
 
@@ -82,9 +85,10 @@ export async function handleAuth(request, { env, store, now, iterations } = {}) 
 
   if (action === 'login') {
     const password = form.get('password') || '';
+    const remember = form.get('remember') === '1';
     for (const role of ROLES) {
       const record = await store.load(role);
-      if (record && (await verifyPassword(password, record))) return signIn(role, role === 'admin' ? '/admin' : '/');
+      if (record && (await verifyPassword(password, record))) return signIn(role, role === 'admin' ? '/admin' : '/', remember);
     }
     return htmlResponse(loginPage({ error: true }), 401);
   }
