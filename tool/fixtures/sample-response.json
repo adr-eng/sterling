@@ -1,0 +1,180 @@
+{
+  "_comment": "SYNTHETIC sample of an Outscraper /maps/search-v3 response. Every business, phone (555-01xx), address and id is made up. Shape matches the live API: data is one array of places per query. Used by tests and `--fixture` runs; no API key needed.",
+  "status": "Success",
+  "data": [
+    [
+      {
+        "query": "plumber in Faketown, ZZ",
+        "name": "Rapid Rooter Plumbing",
+        "place_id": "SYN-0001",
+        "address": "101 Pipe St, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "postal_code": "00001",
+        "phone": "+1 555-010-0101",
+        "website": "https://rapidrooter.example",
+        "type": "Plumber",
+        "subtypes": "Plumber, Drainage service",
+        "rating": 4.7,
+        "reviews": 412,
+        "business_status": "OPERATIONAL",
+        "verified": true,
+        "working_hours": {
+          "Monday": ["8AM-5PM"], "Tuesday": ["8AM-5PM"], "Wednesday": ["8AM-5PM"],
+          "Thursday": ["8AM-5PM"], "Friday": ["8AM-5PM"], "Saturday": ["Closed"], "Sunday": ["Closed"]
+        },
+        "location_link": "https://maps.google.com/?cid=SYN0001"
+      },
+      {
+        "query": "plumber in Faketown, ZZ",
+        "name": "Rapid Rooter Plumbing",
+        "place_id": "SYN-0001",
+        "address": "101 Pipe St, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0101",
+        "type": "Plumber",
+        "reviews": 412
+      },
+      {
+        "query": "plumber in Faketown, ZZ",
+        "name": "Comfort Air Heating & Cooling",
+        "place_id": "SYN-0002",
+        "address": "22 Vent Ave, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0102",
+        "website": "",
+        "type": "HVAC contractor",
+        "subtypes": "HVAC contractor, Air conditioning repair service",
+        "rating": 4.4,
+        "reviews": 96,
+        "business_status": "OPERATIONAL",
+        "verified": false,
+        "location_link": "https://maps.google.com/?cid=SYN0002"
+      },
+      {
+        "query": "locksmith in Faketown, ZZ",
+        "name": "AllHours Locksmith",
+        "place_id": "SYN-0003",
+        "address": "3 Key Rd, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0103",
+        "website": "https://www.facebook.com/allhourslock.example",
+        "type": "Locksmith",
+        "rating": 4.8,
+        "reviews": 150,
+        "business_status": "OPERATIONAL",
+        "verified": true,
+        "working_hours": {
+          "Monday": ["Open 24 hours"], "Tuesday": ["Open 24 hours"], "Wednesday": ["Open 24 hours"],
+          "Thursday": ["Open 24 hours"], "Friday": ["Open 24 hours"], "Saturday": ["Open 24 hours"], "Sunday": ["Open 24 hours"]
+        },
+        "location_link": "https://maps.google.com/?cid=SYN0003"
+      }
+    ],
+    [
+      {
+        "query": "dentist in Faketown, ZZ",
+        "name": "Northside Family Dental",
+        "place_id": "SYN-0004",
+        "address": "44 Smile Blvd, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0104",
+        "website": "https://northsidedental.example",
+        "type": "Dentist",
+        "rating": 4.9,
+        "reviews": 238,
+        "business_status": "OPERATIONAL",
+        "verified": true,
+        "booking_appointment_link": "https://booking.example/northside",
+        "working_hours": {
+          "Monday": ["8AM-5PM"], "Tuesday": ["8AM-5PM"], "Wednesday": ["8AM-5PM"],
+          "Thursday": ["8AM-5PM"], "Friday": ["Closed"], "Saturday": ["Closed"], "Sunday": ["Closed"]
+        },
+        "location_link": "https://maps.google.com/?cid=SYN0004"
+      },
+      {
+        "query": "dentist in Faketown, ZZ",
+        "name": "Sunny Bloom Gifts",
+        "place_id": "SYN-0005",
+        "address": "5 Market St, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0105",
+        "type": "Gift shop",
+        "rating": 4.2,
+        "reviews": 30,
+        "business_status": "OPERATIONAL",
+        "verified": false,
+        "working_hours": { "Monday": ["10AM-6PM"], "Saturday": ["10AM-4PM"], "Sunday": ["Closed"] }
+      },
+      {
+        "query": "auto repair shop in Faketown, ZZ",
+        "name": "Old Mill Auto Repair",
+        "place_id": "SYN-0006",
+        "address": "6 Mill Ln, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0106",
+        "type": "Auto repair shop",
+        "rating": 4.1,
+        "reviews": 120,
+        "business_status": "CLOSED_PERMANENTLY",
+        "verified": true
+      },
+      {
+        "query": "veterinarian in Faketown, ZZ",
+        "name": "Quiet Paws Veterinary",
+        "place_id": "SYN-0007",
+        "address": "7 Pet Way, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "",
+        "type": "Veterinarian",
+        "rating": 4.6,
+        "reviews": 88,
+        "business_status": "OPERATIONAL",
+        "verified": true
+      },
+      {
+        "query": "garage door repair in Faketown, ZZ",
+        "name": "Mr. Fixit Garage Doors",
+        "place_id": "SYN-0008",
+        "address": "8 Door Dr, Faketown, ZZ 00001",
+        "city": "Faketown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0108",
+        "type": "Garage door supplier",
+        "reviews": 64,
+        "business_status": "OPERATIONAL"
+      },
+      {
+        "query": "garage door repair in Faketown, ZZ",
+        "name": "Mr. Fixit Garage Doors",
+        "place_id": "SYN-0009",
+        "address": "9 Door Dr, Othertown, ZZ 00002",
+        "city": "Othertown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0109",
+        "type": "Garage door supplier",
+        "reviews": 41,
+        "business_status": "OPERATIONAL"
+      },
+      {
+        "query": "garage door repair in Faketown, ZZ",
+        "name": "Mr Fixit Garage Doors",
+        "place_id": "SYN-0010",
+        "address": "10 Door Dr, Thirdtown, ZZ 00003",
+        "city": "Thirdtown",
+        "state_code": "ZZ",
+        "phone": "+1 555-010-0110",
+        "type": "Garage door supplier",
+        "reviews": 12,
+        "business_status": "OPERATIONAL"
+      }
+    ]
+  ]
+}

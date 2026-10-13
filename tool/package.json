@@ -1,0 +1,14 @@
+{
+  "name": "sterling-lead-finder",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Find local businesses that need an AI voice agent: Outscraper Google Maps search, scored and explained. No dependencies.",
+  "bin": { "sterling": "cli/sterling.mjs" },
+  "scripts": {
+    "test": "node --test",
+    "sample": "node cli/sterling.mjs --fixture fixtures/sample-response.json",
+    "find": "node cli/sterling.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

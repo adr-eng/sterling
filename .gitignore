@@ -1,0 +1,7 @@
+node_modules/
+.vercel/
+.env*
+# CLI output: scraped listings stay on the machine that pulled them.
+runs/
+tool/runs/
+.DS_Store
