@@ -12,6 +12,7 @@ import { DEFAULT_WEIGHTS } from '../tool/lib/profile.mjs';
 import { buildToolZip, ZIP_PATH } from '../scripts/pack-tool.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
+const ROUTES = new Set(['/password']); // served by the sign-in gate, not a file
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 const html = read('index.html');
 const block = (id) => JSON.parse(new RegExp(`<script type="application/json" id="${id}">([\\s\\S]*?)</script>`).exec(html)[1]);
@@ -52,7 +53,7 @@ test('every file the page hands over exists', () => {
   const updates = data.sections.find((s) => s.type === 'updates');
   for (const item of updates.items) {
     for (const a of item.attachments || []) {
-      if (/^https?:/.test(a.href)) continue;
+      if (/^https?:/.test(a.href) || ROUTES.has(a.href)) continue;
       assert.ok(existsSync(join(ROOT, a.href.replace(/^\//, ''))), `${a.href} exists`);
     }
   }

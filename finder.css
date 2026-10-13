@@ -99,3 +99,5 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 
 .foot { border-top: 1px solid var(--line, #e4e4e4); padding-top: 16px; color: var(--faint, #6e6e6e); font-size: var(--fs-micro, .75rem); }
 .foot p { margin: 0; max-width: 70ch; }
+.foot-links { display: flex; gap: 16px; margin-top: 12px !important; }
+.foot-links a { display: inline-flex; align-items: center; min-height: 44px; }

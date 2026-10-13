@@ -1,28 +1,17 @@
-// Middleware: the site password gate, from the shared Portal Kit.
+// Middleware: every request passes the sign-in gate first.
 //
-// All logic and the login page live in scripts/kit/gate.mjs (copied from
-// portal-kit releases/v20/tools/gate.mjs); this file is only this site's config.
-// The password is the SITE_PASSWORD environment variable in the Vercel project,
-// never in code. Fail-open: with no SITE_PASSWORD set, nothing is gated, so set
-// it before (or right as) the first deploy. Changing it signs everyone out.
+// The partner sets their own password from a one-time setup link
+// (/setup?code=SETUP_CODE); only its hash is stored, in a private Vercel Blob
+// store. Sessions are signed cookies (SESSION_SECRET). Fail-closed: with no
+// SESSION_SECRET the site shows "not set up yet". Logic: auth/gate.mjs.
 export const config = {
-  matcher: '/((?!favicon\\.ico|fonts/|_vercel/).*)',
-};
-
-const settings = {
-  client: 'Sterling',
-  title: 'Sterling Portal',
-  cookie: 'sterling_auth',
-  salt: 'sterling',
-  release: 'v20',
-  note: 'Private partner portal. Access is shared directly by Hirobius.',
-  variant: 'card',
+  matcher: '/((?!favicon\\.ico|_vercel/).*)',
 };
 
 // Loaded with import() so it works on both Vercel middleware runtimes
 // (Edge bundles it; the Node runtime can't require() an ES module).
 let gate;
 export default async function middleware(request) {
-  gate ||= (await import('./scripts/kit/gate.mjs')).portalGate(settings);
-  return gate(request);
+  gate ||= (await import('./auth/gate.mjs')).gate;
+  return gate(request, { env: process.env });
 }
