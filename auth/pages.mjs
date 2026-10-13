@@ -27,7 +27,7 @@ button{font:inherit;font-size:.95rem;font-weight:600;min-height:44px;padding:.75
 button:focus-visible,a:focus-visible{outline:2px solid var(--ink,#141414);outline-offset:2px}
 a{color:inherit;text-underline-offset:2px}
 .err{color:#b3372f;font-size:.9rem}.ok{color:var(--ok,#218358);font-size:.9rem;font-weight:600}
-.note{color:var(--faint,#6e6e6e);font-size:.8rem}
+.note{color:var(--muted,#555);font-size:.8rem}
 .links{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.9rem}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{color:#ef7d74}}
 `;
