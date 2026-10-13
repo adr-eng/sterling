@@ -44,6 +44,20 @@ async function roleForCode(code, env, store) {
   return null;
 }
 
+/**
+ * True when a POST did not come from this site. Browsers send Sec-Fetch-Site,
+ * which pages can't fake; trust it first, because a strict Referrer-Policy can
+ * make a same-site form send "Origin: null". Clients without either header
+ * (curl, scripts) are allowed; they can't ride a signed-in browser session.
+ */
+export function isCrossSite(request, url) {
+  const site = request.headers.get('sec-fetch-site');
+  if (site) return site !== 'same-origin';
+  const origin = request.headers.get('origin');
+  if (!origin) return false;
+  return origin === 'null' || origin !== url.origin;
+}
+
 export async function handleAuth(request, { env, store, now, iterations } = {}) {
   const url = new URL(request.url);
   const action = url.searchParams.get('do');
@@ -63,8 +77,7 @@ export async function handleAuth(request, { env, store, now, iterations } = {}) 
   if (request.method !== 'POST') return redirect('/');
 
   // Forms only ever post from this site.
-  const origin = request.headers.get('origin');
-  if (origin && origin !== url.origin) return new Response('Forbidden', { status: 403 });
+  if (isCrossSite(request, url)) return new Response('Forbidden', { status: 403 });
   const form = new URLSearchParams(await request.text());
 
   if (action === 'login') {

@@ -14,10 +14,11 @@ const BASE = 'https://sterling.example';
 function memStore(records = {}) {
   return { records: { ...records }, saves: 0, async load(n) { return this.records[n] ?? null; }, async save(n, r) { this.records[n] = r; this.saves++; } };
 }
-function post(action, fields, { cookie, origin = BASE } = {}) {
+function post(action, fields, { cookie, origin = BASE, site } = {}) {
   const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
   if (cookie) headers.cookie = cookie;
   if (origin) headers.origin = origin;
+  if (site) headers['sec-fetch-site'] = site;
   return new Request(`${BASE}/api/auth?do=${action}`, { method: 'POST', headers, body: new URLSearchParams(fields).toString() });
 }
 const cookieFrom = (res) => (res.headers.get('set-cookie') || '').split(';')[0];
@@ -174,4 +175,20 @@ test('forms posted from another site are refused; logout clears the cookie', asy
   const out = await handleAuth(new Request(`${BASE}/api/auth?do=logout`), ctx(memStore()));
   assert.equal(out.status, 303);
   assert.match(out.headers.get('set-cookie'), /Max-Age=0/);
+});
+
+test('a real browser posting from our own page is accepted, even when it sends Origin: null', async () => {
+  // Chrome sends "Origin: null" on form posts when the page's Referrer-Policy is
+  // no-referrer; Sec-Fetch-Site still says same-origin. This 403'd in production.
+  const store = memStore();
+  const res = await handleAuth(post('setup', { code: ENV.ADMIN_SETUP_CODE, password: 'adrian long password', confirm: 'adrian long password' }, { origin: 'null', site: 'same-origin' }), ctx(store));
+  assert.equal(res.status, 303);
+  assert.equal(await roleOf(res), 'admin');
+});
+
+test('cross-site browser posts are refused, whatever Origin says', async () => {
+  for (const [origin, site] of [['null', 'cross-site'], [BASE, 'cross-site'], ['https://evil.example', 'same-site'], ['null', undefined]]) {
+    const res = await handleAuth(post('login', { password: 'x' }, { origin, site }), ctx(memStore()));
+    assert.equal(res.status, 403, `origin=${origin} sec-fetch-site=${site}`);
+  }
 });
