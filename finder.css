@@ -33,7 +33,7 @@ h1 { margin: 12px 0 6px; font-size: var(--fs-hero, 2.1rem); letter-spacing: -.02
 
 label { display: grid; gap: 4px; margin: 0 0 12px; }
 .lbl { font-weight: 600; font-size: var(--fs-label, .8rem); }
-.hint { color: var(--faint, #6e6e6e); font-size: var(--fs-micro, .75rem); }
+.hint { color: var(--muted, #555); font-size: var(--fs-micro, .75rem); }
 input[type=text], input[type=password], input[type=number], textarea {
   width: 100%; font: inherit; font-size: 1rem; padding: .6rem .75rem; border-radius: var(--r-sm, 8px);
   border: 1px solid var(--line-strong, #cfcfcf); background: var(--panel, #fff); color: var(--ink, #141414);
@@ -97,7 +97,7 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .why summary { cursor: pointer; color: var(--muted, #555); font-size: var(--fs-label, .8rem); padding: 4px 0; }
 .why ul { margin: 4px 0 0; padding-left: 1.1rem; color: var(--muted, #555); font-size: var(--fs-label, .8rem); }
 
-.foot { border-top: 1px solid var(--line, #e4e4e4); padding-top: 16px; color: var(--faint, #6e6e6e); font-size: var(--fs-micro, .75rem); }
+.foot { border-top: 1px solid var(--line, #e4e4e4); padding-top: 16px; color: var(--muted, #555); font-size: var(--fs-micro, .75rem); }
 .foot p { margin: 0; max-width: 70ch; }
 .foot-links { display: flex; gap: 16px; margin-top: 12px !important; }
 .foot-links a { display: inline-flex; align-items: center; min-height: 44px; }
